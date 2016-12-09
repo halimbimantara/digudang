@@ -1,0 +1,131 @@
+//Cadangan Cetak nota penjualan
+SELECT trxpj.masterpenjualan_id,master_penjualan.no_nota,master_penjualan.tgl_penjualan,master_penjualan.id_pelanggan,produk.nama_produk,produk.harga_jual,trxpj.qty,trxpj.sub_total as total
+			FROM trx_penjualan_detail as trxpj
+			INNER JOIN produk on produk.kode_produk=trxpj.kode_produk
+			INNER JOIN master_penjualan on master_penjualan.masterpenjualan_id=trxpj.masterpenjualan_id
+			WHERE trxpj.masterpenjualan_id='$id'
+
+
+
+#Meneyelesaikan modul pembelian
+
+1.No nota Otomatis 
+2.pembelian di berikan tambahan kolom total penjualan 
+3.Menambahkan fungsi harga paket
+4.sistem jual
+5.stok hanya berupa nilai yang terjual pada harga jual apakah lsg di rubah ?
+
+=harga jual pilih yang terbaru
+=harga beli disimpan pada waktu penjualan misalkan harga belinya berbeda harga berarti penjualanya menampilkan dua kolom dengan harga beli berbeda
+= harga beli antri 
+= tampilan form harga jual 
+= harga jual selalu update tidak perlu antri
+/*
+
+* Pembelian Galon dan Penjualan galon+ air
+* tampilan pembelian galon
+* nama dijadikan 1 beli galon dan jual
+* Bukti update pembelian/stok  // lupa 
+* Pembelian ditambahkan transaksi kolom
+* harga jual lock
+* session nama kasir print out
+* penentuan search barang dihilangkan id barang
+* tambah generate barcode
+* field kode barang hide                      +
+* data pelanggan hanya input (salah isi lapor) +
+* penggajian /minggu
+* lock klik kanan 
+* harga paket beda apabila stok yang ada =< batas kuantiti yang sudah diatur if batas < pket kosong 
+*
+*/
+
+=================TAMBAHAN===================
+- harga beli pada proses update pembelian menampilkan list harga beli sebelumnya berdasarkan tangagl 
+- untuk total stok diambil dari total pembelian stok [pada tampilan penjualan dan update pembelian] 
+- untuk history pembelian temporary atau menggunakan table database
+
+- untuk pembelian menggunakan uang toko nanti mengurangi setoran [tambah kolom di pembelian detail] *
+- laporan pembelian komoditi menampilkan semua mengenai pembelian baik yang menggunakan uang kantor
+  untuk pembelian menggunakan uang kantor tidak selalu satu nota ,terkadang dalam satu nota cuma 1 barang saja.
+  terkadang dalam satu barang misalkan 50% uang pembelian 50% uang kantor.
+  solusi pada waktu input pembelian diberi inputan berapa uang yang di keluarkan kantor/toko *
+
+- menambahkan catatan pada waktu print out pembelian apakah menggunakan uang kantor atau tidak 
+- Barang rusak
+
+#menu penjualan ketika hapus peritem ketika dc masih ada trus item dhpus smua total masih sisa
+
+- kalau barang paket memenuhi harga paket misalkan 10+ tetapi totalnya dari dua harga beli yang berbeda  
+
+-laporan stok ada 3
+	1.untuk karyawan yaitu mengecek semua stok yang ada menghiraukan harga beli
+	2.untuk report laba rugi
+
+=======================================================================
+- untuk transaksi penjualan 00036 oper galon di injek manual
+
+# Uang kantor hanya combo box centang (tanyakan) [SUDAH]
+# Print Pembelian Lain
+# Pembatasan panjang huruf pada register
+# Untuk nota cetak penjualan ketika harga berbeda belum tergrup
+# Untuk transaksi tukar galon diakali seperti apa [pembelian seperti biasa saja] *
+# Pembelian & Penjualan dengan uang toko [cetak] {}
+# Untuk Penjualan uangkantor masuk lain2 juga
+# Laporan beli lain digabung penjualan/pembelian uang toko
+# View untuk merubah harga jual
+# Edit Suplier dll
+# Tombol selesai pada penjualan ketika data kosong masih mengisi
+# Harga grosir
+# Harga Grosir waktu print masih salah
+# Tabel balance [laporannya]
+# no gen nota pemblain seharusnya 101 tpi 0001
+# Tambahkan balance pada print out pembelian
+# EDit SCDC
+# pemberian kode tertentu 
+# pembelian harus ada nama barang
+# form cetak berdasarkan nota
+# Laporan Stok berdasarkan paket belum bisa 
+
+[Uang Toko / Lain]
+#Laporan di bedakan berdasarkan kategori pajak,retribusi dll 
+
+[PROMO]
+-promo ditambahkan pada pembelian contreng promo
+-pada saat jual item promo yang mana laba tertulis minus seharusnya bisa di nol juga
+
+#[NERACA]
+* Untuk pembelian lain-lain juga diberi uang kantor dan juga di kelompokan
+  karena tak semua kebutuhan lain/ut mampu ditopang oleh uang toko
+  contoh: pembelian lcd 
+
+* Pembelian komoditi ketika menggunakan uang toko tidak harus masuk lain2
+  cuman di kelompokan saja berdasarkan penggunaan uang toko di laporanya.
+cek lagi penggunaan uang toko
+perubahan pada category pada pembelian lain2 untuk penggunaan toko category 0
+
+# Tinggal laba rugi perlu di cek lagi dan gaji
+# Gaji untuk dc petugas delivery dtambahkan di neraca
+# Stok Yang tersisa dhtung dari harga beli
+# balance belum ditambahkan pada beli lain
+# total pembelian uang toko
+# harga grosir ketika otomatis maka akan update paket juga
+# penjualan dengan menggunakan ut msih kendala
+# Dc masih trouble ketika memilih pbaru
+# Menghapus item registrasi
+
+- Nomor motor tmbhkan colon pada pegawai juga
+- waktu milih/register pegawai juga tmbhkan register motor
+- Pajak Motor di kategorikan
+
+- Register User
+- Off barang retur pada komputer harus dijual melalui penjualan
+# menghapus nota salah
+# khusus untuk nota penjualan ketika menghapus data jual maka akan mengembalikan stok yang  diambil berdasarkan masterpembelianya
+
+# service charge harus direfresh ketika harga sc sudah dirubah
+- Tambahkan konten informasi pada registrasi
+- uang setoran
+
+
+
+Intelxdkku12@

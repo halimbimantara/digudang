@@ -1,0 +1,40 @@
+
+CREATE VIEW v_trx_pembelian AS
+SELECT b.tgl_pembelian,b.kode_suplier,b.petugas,d.*
+FROM trx_pembelian_detail d
+JOIN master_pembelian b ON b.masterpembelian_id=d.masterpembelian_id
+
+CREATE VIEW v_trx_penjualan AS
+SELECT j.tgl_penjualan,j.user_id,j.id_pelanggan,j.cetak,d.*
+FROM trx_penjualan_detail d
+JOIN master_penjualan j ON j.masterpenjualan_id=d.masterpenjualan_id
+
+####################################################################################
+SET @tgl1='2016-05-31';
+SET @tgl2='2016-06-06';
+SELECT m.id_detailpembelian,m.masterpembelian_id,m.kode_produk,m.tgl_pembelian,m.harga_beli,
+	p.nama_produk,
+	COALESCE(j.harga_jual,'') harga_jual,
+	COALESCE(j.subjual,'') subjual,
+	COALESCE(a.awal,'') awal,
+	COALESCE(b.beli,'') beli,
+	COALESCE(j.qty,'') jual,
+	(COALESCE(a.awal,0)+COALESCE(b.beli,0))-COALESCE(j.qty,0) akhir
+FROM v_trx_pembelian m
+JOIN produk p ON p.kode_produk=m.kode_produk
+LEFT OUTER JOIN (	
+	SELECT id_detailpembelian,stok awal
+	FROM v_trx_pembelian 
+	WHERE tgl_pembelian < @tgl1
+	) a ON a.id_detailpembelian=m.id_detailpembelian
+LEFT OUTER JOIN (	
+	SELECT id_detailpembelian,total_qty beli
+	FROM v_trx_pembelian 
+	WHERE tgl_pembelian >= @tgl1 AND tgl_pembelian <= @tgl2
+	) b ON b.id_detailpembelian=m.id_detailpembelian
+LEFT OUTER JOIN (
+	SELECT masterpenjualan_id,tgl_penjualan,kode_produk,SUM(sub_total) subjual,SUM(qty) qty,sub_total/qty harga_jual,masterpembelian_id
+	FROM v_trx_penjualan
+	WHERE tgl_penjualan >= @tgl1 AND tgl_penjualan <= @tgl2
+	GROUP BY masterpembelian_id,kode_produk
+	) j ON j.masterpembelian_id=m.masterpembelian_id
